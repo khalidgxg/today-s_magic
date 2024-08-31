@@ -17,18 +17,17 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('phone')->unique()->nullable();
             $table->string('gender')->default('male');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->index();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('birth_date')->nullable();
             $table->string('avatar')->nullable();
             $table->boolean('active')->default(true);
-           // $table->foreignUuid('country_id')->nullable()->references('id')->on('countries');
+            $table->foreignId('country_id')->nullable()->references('id')->on('countries');
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
 
-           // $table->index(['last_name', 'first_name', 'email', 'active', 'gender']);
         });
     }
 

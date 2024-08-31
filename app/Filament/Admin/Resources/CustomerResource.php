@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\CustomerResource\Pages;
-use App\Filament\Resources\CustomerResource\RelationManagers;
+use App\Filament\Admin\Resources\CustomerResource\Pages;
+use App\Filament\Admin\Resources\CustomerResource\RelationManagers;
 use App\Models\Customer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -47,13 +47,14 @@ class CustomerResource extends Resource
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\DateTimePicker::make('birth_date'),
-                Forms\Components\FileUpload::make('avatar') // Changed from TextInput to FileUpload
-                ->image()
-                    ->maxSize(2048) // Example of setting max file size to 2MB
-                    ->directory('avatars')
+                Forms\Components\TextInput::make('avatar')
+                    ->maxLength(255)
                     ->default(null),
                 Forms\Components\Toggle::make('active')
                     ->required(),
+                Forms\Components\TextInput::make('country_id')
+                    ->numeric()
+                    ->default(null),
             ]);
     }
 
@@ -81,6 +82,9 @@ class CustomerResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('country_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

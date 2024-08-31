@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
+            $table->string('name_ar');
+            $table->string('name_en');
+            $table->json('features_data');
+            $table->float('price');
+            $table->boolean('is_active')->default(true);
+            $table->integer('duration');
             $table->timestamps();
         });
     }

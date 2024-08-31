@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('backgrounds', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('image_url');
+            $table->string('thumbnail_url')->nullable();
+            $table->integer('width')->nullable();
+            $table->integer('height')->nullable();
+            $table->string('color_theme')->nullable();
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

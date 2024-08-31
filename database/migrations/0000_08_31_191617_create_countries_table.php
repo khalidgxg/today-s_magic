@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('letters', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->references('id')->on('categories');
-            $table->longText('name_en');
-            $table->longText('name_ar');
-            $table->longText('message_en')->nullable();
-            $table->longText('message_ar')->nullable();
+            $table->string('name');
+            $table->string('name_ar');
+            $table->string('country_code');
+            $table->string('phone_code');
+            $table->integer('phone_digits');
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('letters');
+        Schema::dropIfExists('countries');
     }
 };
