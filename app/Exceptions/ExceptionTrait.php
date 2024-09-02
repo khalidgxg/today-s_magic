@@ -17,22 +17,26 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use ParseError;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
-trait ExceptionTrait
+class ExceptionTrait
 {
     /**
      * Creates a new JSON response based on exception type.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  Throwable  $e
-     * @return \Illuminate\Http\JsonResponse
+
      */
-    protected function getJsonResponseForException(Request $request, Throwable $e)
+    public function getJsonResponseForException(Request $request, Throwable $e)
     {
+        if (isProductionEnv()) {
+            return $this->badRequest();
+        }
         switch (true) {
             case $this->isQueryException($e) && $e->getCode() == '23000':
                 return $this->jsonResponse(__('exceptions.violates_foreign_key_constraint'), null, 409);
@@ -62,12 +66,10 @@ trait ExceptionTrait
                 return $this->logicException($e);
 
             default:
+                return $this->badRequest();
 
-                if (isProductionEnv()) {
-                    return $this->badRequest();
-                }
 
-                return parent::render($request, $e);
+
         }
     }
 
@@ -92,8 +94,11 @@ trait ExceptionTrait
 
     protected function isModelNotFoundException($e)
     {
-        return $e instanceof ModelNotFoundException;
+        if (($e->getPrevious() && $e->getPrevious() instanceof ModelNotFoundException) or $e instanceof ModelNotFoundException) {
+            return true;
+        }
     }
+
 
     protected function isThrottleRequestsException($e)
     {

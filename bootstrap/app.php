@@ -1,14 +1,18 @@
 <?php
 
+use App\Exceptions\ExceptionTrait;
 use App\Http\Middleware\ConvertCamelCaseToSnakeCase;
 use App\Http\Middleware\DeleteEmptyAndNullStrings;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -66,5 +70,14 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (Throwable $e, Request $request) {
+            return (new ExceptionTrait())->getJsonResponseForException($request, $e);
+        })->dontReport([
+            LogicException::class,
+        ])->dontFlash([
+            'password',
+            'password_confirmation',
+        ])->report(function (Throwable $e) {
+        return true;
+        });
     })->create();

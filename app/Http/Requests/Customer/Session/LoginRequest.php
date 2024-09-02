@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Customer\Session;
 
+use App\Models\Category;
+use App\Models\User;
 use App\Traits\FailedValidationsMessages;
 use Illuminate\Foundation\Http\FormRequest;
 
