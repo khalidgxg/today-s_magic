@@ -22,7 +22,7 @@ jobs:
           ftp-server: 'ftp://ftpupload.net'
           ftp-username: ${{ secrets.FTP_USERNAME }}
           ftp-password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./public/  # Upload public folder
+          local-dir: ./public/  # Upload only the public folder
           server-dir: /htdocs/  # Target is htdocs on the server
 
       - name: Upload Laravel App Files to 'today'
