@@ -19,18 +19,18 @@ jobs:
       - name: Upload Public Files to htdocs
         uses: SamKirkland/FTP-Deploy-Action@4.2.0
         with:
-          ftp-server: 'ftp://ftpupload.net'
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          server: 'ftpupload.net'
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./public/  # Upload only the public folder
           server-dir: /htdocs/  # Target is htdocs on the server
 
       - name: Upload Laravel App Files to 'today'
         uses: SamKirkland/FTP-Deploy-Action@4.2.0
         with:
-          ftp-server: 'ftp://ftpupload.net'
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          server: 'ftpupload.net'
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./  # Upload the entire Laravel directory
           server-dir: /today/  # Upload to 'today' folder outside htdocs
           exclude: |           # Exclude unnecessary files and folders
