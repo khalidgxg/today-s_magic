@@ -32,7 +32,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./  # Upload the entire Laravel directory
-          server-dir: /today/  # Upload to 'today' folder outside htdocs
+          server-dir: /htdocs/today/  # Upload to 'today' folder outside htdocs
           exclude: |           # Exclude unnecessary files and folders
             public/**
             node_modules/**
